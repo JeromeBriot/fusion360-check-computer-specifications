@@ -1,0 +1,13 @@
+{
+	"autodeskProduct":	"Fusion360",
+	"type":	"addin",
+	"id":	"3c5fc105-c626-4753-835e-7023226bccb2",
+	"author":	"Jerome Briot",
+	"description":	{
+		"":	"Check the computer specifications against recommended requirements by Autodesk."
+	},
+	"version":	"0.1.0",
+	"runOnStartup":	false,
+	"supportedOS":	"windows|mac",
+	"editEnabled":	true
+}

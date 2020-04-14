@@ -1,0 +1,84 @@
+html, body {
+  background-color: #ffffff;
+}
+
+/* http://css-workshop.com/css-ul-custom-bullet-style-with-image/ */
+
+p {
+  font-weight: bold;
+  font-size: 0.7rem;
+  font-family: Tahoma, Helvetica Neue, Helvetica, Arial, sans-serif;
+  color: #666;
+}
+
+ul, li { 
+  font-weight: bold; 
+  font-size: 0.7rem;
+  font-family: Tahoma, Helvetica Neue, Helvetica, Arial, sans-serif;
+  color: #666;
+}
+.custom-list {  
+  list-style: none;
+  padding-left: 0; 
+}
+
+.custom-list2 {  
+  list-style: none;
+  padding-left: 10px; 
+}
+
+.custom-list li, .custom-list2 li {
+  position: relative;
+  padding-left: 20px;
+}
+.custom-list li#above:before, .custom-list2 li#above:before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  background-image: url('../resources/above.png');
+  background-size: cover;
+  background-position: center;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.custom-list li#below:before, .custom-list2 li#below:before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  background-image: url('../resources/below.png');
+  background-size: cover;
+  background-position: center;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.custom-list li#ok:before, .custom-list2 li#ok:before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  background-image: url('../resources/ok.png');
+  background-size: cover;
+  background-position: center;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.custom-list li#none:before, .custom-list2 li#none:before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  background-image: url('../resources/none.png');
+  background-size: cover;
+  background-position: center;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
