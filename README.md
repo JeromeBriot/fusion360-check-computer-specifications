@@ -1,6 +1,6 @@
 # ![CheckComputerSpecs](./resources/32x32.png) Fusion 360 - Check Computer Specifications
 
-An add-in that checks computer specifications against system requirements recommended Autodesk for Fusion 360.
+An add-in that checks computer specifications against system requirements recommended by Autodesk for Fusion 360.
 
 | ![CheckComputerSpecs palette](./doc/windows.png) | ![CheckComputerSpecs palette](./doc/macos.png) |
 | :---: | :---: |
