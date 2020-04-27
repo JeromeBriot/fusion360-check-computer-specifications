@@ -68,6 +68,7 @@ window.fusionJavaScriptHandler = {
                 for (var i=0; i<obj.memory.count; i++) {
                     totalRamMemory += parseInt(obj.memory.size[i], 10);
                 }
+                totalRamMemory /= 1024;
                 var elemLi = document.createElement('li');
                 if (totalRamMemory < 4) {
                     elemLi.id = 'below';
@@ -79,10 +80,13 @@ window.fusionJavaScriptHandler = {
                 elemLi.innerText = `${totalRamMemory}GB`;
                 elemUl.appendChild(elemLi);
                 // Memory type
-                var elemLi = document.createElement('li');
-                elemLi.id = 'none';
-                elemLi.innerText = `${obj.memory.type[0]}`;
-                elemUl.appendChild(elemLi);    
+                if (obj.memory.type[0] != '')
+                {
+                    var elemLi = document.createElement('li');
+                    elemLi.id = 'none';
+                    elemLi.innerText = `${obj.memory.type[0]}`;
+                    elemUl.appendChild(elemLi);  
+                }  
                 // Memory modules            
                 for (var i=0;i<obj.memory.count;i++) {
                     var elemUl2 = document.createElement('ul');
@@ -91,17 +95,24 @@ window.fusionJavaScriptHandler = {
                     // Memory module size
                     var elemLi = document.createElement('li');
                     elemLi.id = 'none';
-                    elemLi.innerText = `${obj.memory.size[i]}GB`;
+                    var memorySize = parseInt(obj.memory.size[i]);
+                    if ( memorySize < 1024) {
+                        elemLi.innerText = `${memorySize}MB`;
+                    }
+                    else {
+                        memorySize /= 1024;
+                        elemLi.innerText = `${memorySize}GB`;
+                    }                    
                     elemUl2.appendChild(elemLi); 
                     // Memory module speed
-                    var elemLi = document.createElement('li');
-                    elemLi.id = 'none';
-                    elemLi.innerText = `${obj.memory.speed[i]}MHz`;
-                    elemUl2.appendChild(elemLi); 
-
+                    if (obj.memory.speed[0] != '') {
+                        var elemLi = document.createElement('li');
+                        elemLi.id = 'none';
+                        elemLi.innerText = `${obj.memory.speed[i]}MHz`;
+                        elemUl2.appendChild(elemLi); 
+                    }
                     elemUl.appendChild(elemUl2);
                 }
-
                 elemDiv.appendChild(elemUl);
 
                 // GPU
@@ -124,14 +135,19 @@ window.fusionJavaScriptHandler = {
                     var elemLi = document.createElement('li');
                     var gpuMemory = parseInt(obj.gpu.memory[i]);
                     if (obj.gpu.type[i] === 'Discret') {
-                        if (gpuMemory < 1) {
+                        if (gpuMemory/1024 < 1) {
                             elemLi.id = 'below';
-                        } else if (gpuMemory < 4) {
+                        } else if (gpuMemory/1024 < 4) {
                             elemLi.id = 'ok';
                         } else {
                             elemLi.id = 'above';
                         }
-                        elemLi.innerText = `${obj.gpu.memory[i]}GB`;
+                        if (gpuMemory < 1024) {
+                            elemLi.innerText = `${gpuMemory}MB`;
+                        }
+                        else {
+                            elemLi.innerText = `${gpuMemory/1024}GB`;
+                        }                        
                     } else {
                         if (totalRamMemory < 6) {
                             elemLi.id = 'below';
@@ -146,9 +162,7 @@ window.fusionJavaScriptHandler = {
                     elemLi.id = 'none';
                     elemLi.innerText = obj.gpu.type[i];
                     elemUl.appendChild(elemLi); 
-
-                    elemDiv.appendChild(elemUl);
-            
+                    elemDiv.appendChild(elemUl);            
                 }               
 
                 var elemHr = document.createElement('hr');

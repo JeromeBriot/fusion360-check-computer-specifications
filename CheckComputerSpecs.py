@@ -5,11 +5,12 @@ import adsk.core, adsk.fusion, traceback # pylint: disable=import-error
 import json
 import threading
 import webbrowser
-from .modules import computerspecs
+
+from .modules import computerspecs # pylint: disable=relative-beyond-top-level
 
 thisAddinName = 'CheckComputerSpecs'
 thisAddinTitle = 'Check Computer Specs'
-thisAddinVersion = '0.1.0'
+thisAddinVersion = '0.2.0'
 thisAddinAuthor = 'Jerome Briot'
 thisAddinContact = 'jbtechlab@gmail.com'
 
@@ -27,6 +28,8 @@ stopFlag = None
 myThread = None
 
 timeoutBeforeSendingData = 1
+
+debugMode = False
 
 class ShowPaletteCommandExecuteHandler(adsk.core.CommandEventHandler):
     def __init__(self):
@@ -99,7 +102,10 @@ class ThreadEventHandler(adsk.core.CustomEventHandler):
     def notify(self, args):
         try:
 
-            hardwareInfo, flag = computerspecs.getHardwareInfo()
+            if not debugMode:
+                hardwareInfo, flag = computerspecs.getHardwareInfo()
+            else:
+                hardwareInfo, flag = computerspecs.getHardwareInfoFromFile()
 
             if flag:
 
@@ -111,10 +117,10 @@ class ThreadEventHandler(adsk.core.CustomEventHandler):
                     else:
                         response = palette.sendInfoToHTML('updateHardwareInfo', json.dumps(hardwareInfo))
                         if response != 'OK':
-                            ui.messageBox('Failed:\nPalette object reurns an error.')
+                            ui.messageBox('Failed:\nPalette object returns an error.')
             else:
 
-                ui.messageBox('Failed:\nUnable to scan hatdware.')
+                ui.messageBox('Failed:\nUnable to scan hardware.')
 
         except:
             if ui:
@@ -169,7 +175,9 @@ def run(context):
             ui.messageBox('Failed:\n{}'.format(traceback.format_exc()), thisAddinName, 0, 0)
 
 def stop(context):
+
     ui = None
+
     try:
         app = adsk.core.Application.get()
         ui  = app.userInterface
