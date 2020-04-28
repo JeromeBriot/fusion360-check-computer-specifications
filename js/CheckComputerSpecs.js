@@ -22,6 +22,13 @@ window.fusionJavaScriptHandler = {
 
                 let elemDiv = document.getElementById('hardwareInfo');
 
+                // Debug
+                if (obj.misc.debug) {
+                    var elemP = document.createElement('p');
+                    elemP.innerText = '/!\\ Debug /!\\'
+                    elemDiv.appendChild(elemP);
+                }
+
                 // CPU
                 var elemUl = document.createElement('ul');
                 elemUl.className = 'custom-list';
@@ -60,6 +67,13 @@ window.fusionJavaScriptHandler = {
                 
                 elemDiv.appendChild(elemUl);
 
+                // Debug
+                if (obj.misc.debug) {
+                    var elemP = document.createElement('p');
+                    elemP.innerText = '/!\\ Debug /!\\'
+                    elemDiv.appendChild(elemP);
+                }
+                
                 // Memory
                 var elemUl = document.createElement('ul');
                 elemUl.className = 'custom-list';
@@ -114,6 +128,13 @@ window.fusionJavaScriptHandler = {
                     elemUl.appendChild(elemUl2);
                 }
                 elemDiv.appendChild(elemUl);
+
+                // Debug
+                if (obj.misc.debug) {
+                    var elemP = document.createElement('p');
+                    elemP.innerText = '/!\\ Debug /!\\'
+                    elemDiv.appendChild(elemP);
+                }
 
                 // GPU
                 for (var i=0; i <obj.gpu.count; i++ ) {

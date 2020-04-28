@@ -10,7 +10,7 @@ from .modules import computerspecs # pylint: disable=relative-beyond-top-level
 
 thisAddinName = 'CheckComputerSpecs'
 thisAddinTitle = 'Check Computer Specs'
-thisAddinVersion = '0.2.0'
+thisAddinVersion = '0.2.1'
 thisAddinAuthor = 'Jerome Briot'
 thisAddinContact = 'jbtechlab@gmail.com'
 

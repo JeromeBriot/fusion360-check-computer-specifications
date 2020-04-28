@@ -3,6 +3,14 @@ import subprocess
 import json
 import os
 
+# For debugging purpose only
+debugMode = True
+fileFromOs = ''
+if platform.system() == 'Windows':
+    txtFile = os.path.join(os.getenv('USERPROFILE'), 'Desktop', 'HMFusion360', '01', 'HMFusion360.txt')
+else:
+    txtFile = os.path.join(os.path.expanduser('~'), 'Desktop', 'HMFusion360.txt')
+
 hardwareInfo = {'cpu': {'longName': [],
                         'shortName': [],
                         'count': -1,
@@ -16,22 +24,14 @@ hardwareInfo = {'cpu': {'longName': [],
                 'memory': {'count': -1,
                             'size': [],
                             'speed': [],
-                            'type': []}
+                            'type': []},
+                'misc': {'debug': debugMode}
                 }
-
-# For debugging purpose only
-debugMode = True
-fileFromOs = ''
-if platform.system() == 'Windows':
-    txtFile = os.path.join(os.getenv('USERPROFILE'), 'Desktop', 'HMFusion360', '01', 'HMFusion360.txt')
-else:
-    txtFile = os.path.join(os.path.expanduser('~'), 'Desktop', 'HMFusion360.txt')
 
 
 def getHardwareInfo():
 
-    global debugMode
-    debugMode = False
+    hardwareInfo['misc']['debug'] = False
 
     flag = getCpuInfo() & getMemoryInfo() & getGpuInfo()
 
@@ -42,8 +42,7 @@ def getHardwareInfo():
 
 def getHardwareInfoFromFile():
 
-    global debugMode
-    debugMode = True
+    hardwareInfo['misc']['debug'] = True
 
     flag = readHardwareInfoFile()
 
@@ -95,7 +94,7 @@ def shortenCpuName():
 
 def checkCollectedInfo():
 
-    if not debugMode:
+    if not hardwareInfo['misc']['debug']:
         if platform.system() == 'Windows':
             checkWindowsInfo()
         else:
@@ -478,14 +477,14 @@ def parseMacOsFile():
 
 if __name__ == '__main__':
 
-    if not debugMode:
+    if not hardwareInfo['misc']['debug']:
         hardwareInfo, flag = getHardwareInfo()
     else:
         hardwareInfo, flag = getHardwareInfoFromFile()
 
     if flag:
 
-        if debugMode:
+        if hardwareInfo['misc']['debug']:
             print('\n/!\\ DEBUG MODE /!\\')
 
         if hardwareInfo['cpu']['count']==1:
@@ -497,7 +496,7 @@ if __name__ == '__main__':
         print('\tFrequency: {}GHz'.format(hardwareInfo['cpu']['frequency']))
         print('\tCores/Threads: {} / {}'.format(hardwareInfo['cpu']['cores'], hardwareInfo['cpu']['threads']))
 
-        if debugMode:
+        if hardwareInfo['misc']['debug']:
             print('\n/!\\ DEBUG MODE /!\\')
 
         print('\nMemory (RAM)')
@@ -524,7 +523,7 @@ if __name__ == '__main__':
             else:
                 print('\t\tSpeed: {}MHz'.format(hardwareInfo['memory']['speed'][i]))
 
-        if debugMode:
+        if hardwareInfo['misc']['debug']:
             print('\n/!\\ DEBUG MODE /!\\')
 
         for i in range(0, hardwareInfo['gpu']['count']):
@@ -545,17 +544,17 @@ if __name__ == '__main__':
                     print('\tMemory: {}GB (RAM)'.format(totalMemory//1024))
             print('\tType: {}'.format(hardwareInfo['gpu']['type'][i]))
 
-        if debugMode:
+        if hardwareInfo['misc']['debug']:
             print('\n/!\\ DEBUG MODE /!\\')
 
     else:
 
-        if debugMode:
+        if hardwareInfo['misc']['debug']:
             print('\n/!\\ DEBUG MODE /!\\')
 
         print('An error occured.\n')
         print('Data collectd so far:\n')
         print(hardwareInfo)
 
-        if debugMode:
+        if hardwareInfo['misc']['debug']:
             print('\n/!\\ DEBUG MODE /!\\')
