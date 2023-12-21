@@ -4,7 +4,7 @@ import json
 import os
 
 # For debugging purpose only
-debugMode = True
+debugMode = False
 fileFromOs = ''
 if platform.system() == 'Windows':
     txtFile = os.path.join(os.getenv('USERPROFILE'), 'Desktop', 'HMFusion360', '01', 'HMFusion360.txt')
@@ -115,8 +115,8 @@ def checkWindowsInfo():
         # Convert memory module size from Bytes to Megabytes
         hardwareInfo['memory']['size'][i] = '{}'.format(int(hardwareInfo['memory']['size'][i])//1024//1024)
         # Convert memory module type
-        hardwareInfo['memory']['type'][i] = hardwareInfo['memory']['type'][i].replace('24', 'DDR3').replace('0','DDR4')
-        if hardwareInfo['memory']['type'][i] not in ['DDR3', 'DDR4']:
+        hardwareInfo['memory']['type'][i] = hardwareInfo['memory']['type'][i].replace('24', 'DDR3').replace('26','DDR4').replace('34','DDR5')
+        if hardwareInfo['memory']['type'][i] not in ['DDR3', 'DDR4', 'DDR5']:
             hardwareInfo['memory']['type'][i] = ''
 
     for i in range(0, hardwareInfo['gpu']['count']):
@@ -197,7 +197,7 @@ def getMemoryInfo():
 
         if platform.system() == 'Windows':
 
-            tmp = subprocess.getoutput('wmic memorychip get Capacity,Speed,MemoryType /value').strip().split('\n')
+            tmp = subprocess.getoutput('wmic memorychip get Capacity,Speed,SMBIOSMemoryType /value').strip().split('\n')
             tmp = [x for x in tmp if x != '']
 
             for t in tmp:
@@ -205,8 +205,8 @@ def getMemoryInfo():
                     hardwareInfo['memory']['size'].append(t.replace('Capacity=', ''))
                 elif t.startswith('Speed='):
                     hardwareInfo['memory']['speed'].append(t.replace('Speed=', ''))
-                elif t.startswith('MemoryType='):
-                    hardwareInfo['memory']['type'].append(t.replace('MemoryType=', ''))
+                elif t.startswith('SMBIOSMemoryType='):
+                    hardwareInfo['memory']['type'].append(t.replace('SMBIOSMemoryType=', ''))
 
             hardwareInfo['memory']['count'] = len(hardwareInfo['memory']['size'])
 

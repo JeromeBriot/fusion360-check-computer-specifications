@@ -16,6 +16,15 @@ Run the **GitHub2Fusion360** add-in in Fusion 360 and copy/paste the URL of the 
 
 Run the **CheckComputerSpecs** add-in and you should see a new button with an icon (![CheckComputerSpecs icon](./resources/16x16.png)) on the quick access toolbar on the upper right corner of the Fusion 360 UI. Click on the button to toggle the visibility of the panel.
 
+# Version history
+- Version 0.3.0 - December 2023
+  - Add support for DDR5 RAM
+- Version 0.2.0 - April 2020
+  - Add tools for debugging
+  - Display memory amount in megabytes if less than one gigabyte
+  - Fix some typos
+
+
 ## Licence
 
 Codes are licensed under the terms of the MIT License.
