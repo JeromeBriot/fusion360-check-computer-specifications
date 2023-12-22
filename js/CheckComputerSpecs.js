@@ -44,15 +44,17 @@ window.fusionJavaScriptHandler = {
                 elemUl.appendChild(elemLi);                
                 // CPU frequency
                 var elemLi = document.createElement('li');
-                if ( cpuFreq < 1.7) {
-                    elemLi.id = 'below';
-                } else if ( cpuFreq < 3) {
-                    elemLi.id = 'ok';
-                } else {
-                    elemLi.id = 'above';
+                if ( cpuFreq > 0) {
+                    if ( cpuFreq < 1.7) {
+                        elemLi.id = 'below';
+                    } else if ( cpuFreq < 3) {
+                        elemLi.id = 'ok';
+                    } else {
+                        elemLi.id = 'above';
+                    }
+                    elemLi.innerText = `${obj.cpu.frequency}GHz`;
+                    elemUl.appendChild(elemLi)
                 }
-                elemLi.innerText = `${obj.cpu.frequency}GHz`;
-                elemUl.appendChild(elemLi)
                 // CPU cores/threads
                 var elemLi = document.createElement('li');
                 if ( cpuCores < 4) {
@@ -122,8 +124,11 @@ window.fusionJavaScriptHandler = {
                     if (obj.memory.speed[0] != '') {
                         var elemLi = document.createElement('li');
                         elemLi.id = 'none';
-                        elemLi.innerText = `${obj.memory.speed[i]}MHz`;
-                        elemUl2.appendChild(elemLi); 
+                        if (obj.memory.speed[i]) {
+                            elemLi.innerText = `${obj.memory.speed[i]}MHz`;
+                            elemUl2.appendChild(elemLi); 
+                        }
+
                     }
                     elemUl.appendChild(elemUl2);
                 }

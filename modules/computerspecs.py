@@ -129,18 +129,21 @@ def checkWindowsInfo():
 def checkMacOsInfo():
 
     # Remove unit from CPU frequency
-    hardwareInfo['cpu']['frequency'] = hardwareInfo['cpu']['frequency'].replace('GHz', '').replace(',', '.').strip()
+    if hardwareInfo['cpu']['frequency'] != -1:
+        hardwareInfo['cpu']['frequency'] = hardwareInfo['cpu']['frequency'].replace('GHz', '').replace(',', '.').strip()
 
     for i in range(0, hardwareInfo['memory']['count']):
         # Remove unit from memory module size
         hardwareInfo['memory']['size'][i] = hardwareInfo['memory']['size'][i].replace('GB', '').strip()
         hardwareInfo['memory']['size'][i] = '{}'.format(int(hardwareInfo['memory']['size'][i]) * 1024)
         # Remove unit from memory speed
-        hardwareInfo['memory']['speed'][i] = hardwareInfo['memory']['speed'][i].replace('MHz', '').strip()
+        if hardwareInfo['memory']['speed']:
+            hardwareInfo['memory']['speed'][i] = hardwareInfo['memory']['speed'][i].replace('MHz', '').strip()
 
     for i in range(0, hardwareInfo['gpu']['count']):
-        # Convert gpu memory size from Gygobytes to Megabytes
-        hardwareInfo['gpu']['memory'][i] = hardwareInfo['gpu']['memory'][i].replace(' MB', '')
+        # Convert gpu memory size from Gygabytes to Megabytes
+        if hardwareInfo['gpu']['memory']:
+            hardwareInfo['gpu']['memory'][i] = hardwareInfo['gpu']['memory'][i].replace(' MB', '')
 
     shortenCpuName()
 
@@ -180,7 +183,8 @@ def getCpuInfo():
 
             tmp = subprocess.getoutput('system_profiler -json SPHardwareDataType')
             tmp = json.loads(tmp)
-            hardwareInfo['cpu']['frequency'] = tmp['SPHardwareDataType'][0]['current_processor_speed']
+            if 'current_processor_speed' in tmp['SPHardwareDataType'][0].keys():
+                hardwareInfo['cpu']['frequency'] = tmp['SPHardwareDataType'][0]['current_processor_speed']
 
         return True
 
@@ -215,12 +219,22 @@ def getMemoryInfo():
             tmp = subprocess.getoutput('system_profiler -json SPMemoryDataType')
             tmp = json.loads(tmp)
 
-            hardwareInfo['memory']['count'] = len(tmp['SPMemoryDataType'][0]['_items'])
+            if '_items' in tmp['SPMemoryDataType'][0].keys():
 
-            for i in range(0, hardwareInfo['memory']['count']):
-                hardwareInfo['memory']['size'].append(tmp['SPMemoryDataType'][0]['_items'][i]['dimm_size'].strip())
-                hardwareInfo['memory']['speed'].append(tmp['SPMemoryDataType'][0]['_items'][i]['dimm_speed'].strip())
-                hardwareInfo['memory']['type'].append(tmp['SPMemoryDataType'][0]['_items'][i]['dimm_type'].strip())
+                hardwareInfo['memory']['count'] = len(tmp['SPMemoryDataType'][0]['_items'])
+
+                for i in range(0, hardwareInfo['memory']['count']):
+                    hardwareInfo['memory']['size'].append(tmp['SPMemoryDataType'][0]['_items'][i]['dimm_size'].strip())
+                    hardwareInfo['memory']['speed'].append(tmp['SPMemoryDataType'][0]['_items'][i]['dimm_speed'].strip())
+                    hardwareInfo['memory']['type'].append(tmp['SPMemoryDataType'][0]['_items'][i]['dimm_type'].strip())
+
+            else:
+
+                hardwareInfo['memory']['count'] = 1
+                hardwareInfo['memory']['size'].append(tmp['SPMemoryDataType'][0]['SPMemoryDataType'].strip())
+                # hardwareInfo['memory']['speed'].append()
+                hardwareInfo['memory']['type'].append(tmp['SPMemoryDataType'][0]['dimm_type'].strip())
+
 
         return True
 
